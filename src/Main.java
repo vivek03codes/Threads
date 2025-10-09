@@ -5,12 +5,25 @@ class Main {
         Thread t1 = new Thread(test1); // Creating instance of Thread & passing the Runnable instance
 
         // Starting Thread
-        test.start();
-        t1.start();
+//        test.start();
+//        t1.start();
 
-        //Main Thread
-        for (; ;) {
-            System.out.println("Main Thread");
+        //Synchronisation
+        Counter counter = new Counter();
+        CounterThread counterThread1 = new CounterThread(counter);
+        CounterThread counterThread2 = new CounterThread(counter);
+
+        counterThread1.start();
+        counterThread2.start();
+
+        try {
+            counterThread1.join();
+            counterThread2.join();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
+        System.out.println(counter.getCount());
+
     }
 }
